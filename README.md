@@ -5,6 +5,12 @@ It is a collaborative project inspired by wanting to further explore how a deck 
 
 Based on everything we learned in **CMPT 120** (Intro to CS & Programming), **125** (Intro to CS & Programming II) & **210** (Probability & Computing) at Simon Fraser University.
 
+## Goals
+- [x] 52 cards deck generation
+- [x] Very basic probabilities output & data storage
+- [ ] Advanced probability calculator using both card attributes
+- [ ] Allow user to guess what card is next (game)
+
 ## How to Download & Run
 To download the file,
 1. To download, click on "card game.py"
