@@ -24,7 +24,7 @@ Enjoy!
 
 ## How to Download & Run
 To download the file,
-1. To download, click on "card game.py"
+1. To download, click on "guessing-game.py" for the game or "cardgencalc.py" for the card generation code.
 2. Click on the 3 dots near the top right and click "Download" or alternatively, `Ctrl` + `Shift` + `S` to download the file.
 3. Have fun!
 
