@@ -29,16 +29,23 @@ def nextCardProb(sameValue, drawn):
 
     return prob
 
-suit = {1:'Spade', 2:'Club', 3:'Heart', 4:'Diamond'}
+# For Value to String retrieval using dictionary for generation
+suits = {1:'Spade', 2:'Club', 3:'Heart', 4:'Diamond'}
 
-num = {1:'Ace', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8', 9:'9', 10:'10', 11:'Jack', 12:'Queen', 13: 'King'}
-stringToNum = {'Ace':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '10':10, 'Jack':11, 'Queen':12, 'King': 13}
+numbers = {1:'Ace', 2:'2', 3:'3', 4:'4', 5:'5', 6:'6', 7:'7', 8:'8', 9:'9', 10:'10', 11:'Jack', 12:'Queen', 13: 'King'}
+
+# for counting
+# suits 0 = Spades, 1 = Clubs, 2 = Hearts, 3 = Diamonds in the dictionary
+suitsDrawn = {"Spade": 0, "Club": 0, "Heart": 0, "Diamond": 0}
+# numbers 0 = Ace, ..., 12 = King in the dictionary
+numbersDrawn = {'Ace': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, 'Jack': 0, 'Queen': 0, 'King': 0}
+
 deck = []
 deckProb = []
 
 # Deck Generator
 while len(deck) < 52:
-    card = num[random.randint(1,13)] + ' of ' + suit[random.randint(1,4)]
+    card = numbers[random.randint(1,13)] + ' of ' + suits[random.randint(1,4)]
 
     if card not in deck:
         deck.append(card)
@@ -56,93 +63,47 @@ if userDraw <= 52 | userDraw >= 1:
     # This will draw from the deck first in first out
     drawn = []
 
-    # suits 0 = Spades, 1 = Clubs, 2 = Hearts, 3 = Diamonds in the list
-    suitsDrawn = [0] * 4
-    
-    # numbers 0 = Ace, ..., 12 = King in the list
-    numbersDrawn = [0] * 13
-
     # remove from deck and add to hand drawn queue style
     for i in range(userDraw):
         drawn.append(deck[0])
         deck.remove(drawn[i])  
         print(drawn[i]+"s")
 
+        number, suit = card.split(" of ")
         # counting
         # suits
-        if "Spade" in drawn[i]:
-            suitsDrawn[0] += 1
-        elif "Club" in drawn[i]:
-            suitsDrawn[1] += 1
-        elif "Heart" in drawn[i]:
-            suitsDrawn[2] += 1
-        elif "Diamond" in drawn[i]:
-            suitsDrawn[3] += 1
+        if suit in suitsDrawn:
+            suitsDrawn[suit] += 1
 
         # numbers
-        if "Ace" in drawn[i]:
-            numbersDrawn[0] += 1
+        if number in numbersDrawn:
+            numbersDrawn[number] += 1
 
-        elif "2" in drawn[i]:
-            numbersDrawn[1] += 1
-
-        elif "3" in drawn[i]:
-            numbersDrawn[2] += 1
-
-        elif "4" in drawn[i]:
-            numbersDrawn[3] += 1
-
-        elif "5" in drawn[i]:
-            numbersDrawn[4] += 1
-
-        elif "6" in drawn[i]:
-            numbersDrawn[5] += 1
-
-        elif "7" in drawn[i]:
-            numbersDrawn[6] += 1
-
-        elif "8" in drawn[i]:
-            numbersDrawn[7] += 1
-            
-        elif "9" in drawn[i]:
-            numbersDrawn[8] += 1
-
-        elif "10" in drawn[i]:
-            numbersDrawn[9] += 1
-
-        elif "Jack" in drawn[i]:
-            numbersDrawn[10] += 1
-
-        elif "Queen" in drawn[i]:
-            numbersDrawn[11] += 1
-            
-        elif "King" in drawn[i]:
-            numbersDrawn[12] += 1
-
+# currently broken, update soon
     #Printing counted lists
     print("\nSuits:")
     for i in range(4):
-        print("{}: {}".format(suit[i + 1], suitsDrawn[i]))
+        print("{}: {}".format(suits[i + 1], suitsDrawn[i]))
     
     print("\nNumbers:")
     for i in range(13):
-        print("{}: {}".format(num[i + 1], numbersDrawn[i]))
+        print("{}: {}".format(numbers[i + 1], numbersDrawn[i]))
 
     #Printing calculations
     print("\nHere are the probabilities of the next card being a: \n")
     
     for i in range(4):
-        probabilityOf(suitsDrawn[i], userDraw, suit, i)
+        probabilityOf(suitsDrawn[i], userDraw, suits, i)
     
     print("\n")
     for i in range(13):
-        probabilityOf(numbersDrawn[i], userDraw, num, i)
+        probabilityOf(numbersDrawn[i], userDraw, numbersDrawn, i)
     
     # Calculating probabilities for the next card (2 attributes)
     for i in range(len(deck)):
-        for key in stringToNum:
+        for key in numbersDrawn:
             if key in deck[i]:
-                numbersDrawnPos = stringToNum[key] - 1
+                numbersDrawnPos = numbersDrawn[key] - 1
         
         deckProb.append(nextCardProb(numbersDrawn[numbersDrawnPos], userDraw))
 
