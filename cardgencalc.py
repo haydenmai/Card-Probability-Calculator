@@ -69,6 +69,7 @@ if userDraw <= 52 | userDraw >= 1:
         deck.remove(drawn[i])  
         print(drawn[i]+"s")
 
+        card = drawn[i]
         number, suit = card.split(" of ")
         # counting
         # suits
@@ -83,29 +84,27 @@ if userDraw <= 52 | userDraw >= 1:
     #Printing counted lists
     print("\nSuits:")
     for i in range(4):
-        print("{}: {}".format(suits[i + 1], suitsDrawn[i]))
+        print("{}: {}".format(suits[i + 1], suitsDrawn[suits[i + 1]]))
     
     print("\nNumbers:")
     for i in range(13):
-        print("{}: {}".format(numbers[i + 1], numbersDrawn[i]))
+        print("{}: {}".format(numbers[i + 1], numbersDrawn[numbers[i + 1]]))
 
     #Printing calculations
     print("\nHere are the probabilities of the next card being a: \n")
     
     for i in range(4):
-        probabilityOf(suitsDrawn[i], userDraw, suits, i)
+        probabilityOf(suitsDrawn[suits[i + 1]], userDraw, suits, i)
     
     print("\n")
     for i in range(13):
-        probabilityOf(numbersDrawn[i], userDraw, numbersDrawn, i)
+        probabilityOf(numbersDrawn[numbers[i + 1]], userDraw, numbers, i)
     
     # Calculating probabilities for the next card (2 attributes)
     for i in range(len(deck)):
         for key in numbersDrawn:
-            if key in deck[i]:
-                numbersDrawnPos = numbersDrawn[key] - 1
-        
-        deckProb.append(nextCardProb(numbersDrawn[numbersDrawnPos], userDraw))
+            if key in deck[i]:        
+                deckProb.append(nextCardProb(numbersDrawn[key], userDraw))
 
     # Printing probabilities in deckProb
     print("\nProbabilities of the next card:")
