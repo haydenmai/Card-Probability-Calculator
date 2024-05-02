@@ -49,22 +49,23 @@ while len(deck) < 52:
     if card not in deck:
         deck.append(card)
 
-print("\nFOR TESTING, DELETE PRINTED DECK LATER")
+print("\n\nFOR TESTING, DELETE LATER\n")
 print(deck)
 print("\nCard shuffling successful! Length of deck: ", len(deck))
+print("FOR TESTING, DELETE LATER\n\n")
 
 print("""Welcome to the Card Guessing Game! 
 ----------------------------------------
 You can draw any number of cards you'd like from the deck and then guess the next card using the presented probabilities.
       
 You will be presented with 2 different probabilities:
-- Probability of the next suit
-- Probability of the next rank
+-> Probability of the next suit
+-> Probability of the next rank
 
 The objective of this game is to correctly guess as many cards as possible:
-- +10 points for correct guesses
-- +5 points for any partially correct guesses
-- 0 points for incorrect guesses
+-> +10 points for correct guesses
+-> +5 points for any partially correct guesses
+-> +0 points for incorrect guesses
 
 Have fun!
 ----------------------------------------""")
