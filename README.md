@@ -8,7 +8,7 @@ Based on everything we learned in **CMPT 120** (Intro to CS & Programming), **CM
 ## Game Info
 You are guessing the next card of the deck! The game will show you the values of the card, but hide the suit of the card.
 
-Presented with the probabilities of the next card & single attribute probabilities of the card, it's your role to successfully guess the next card!
+Presented with the probabilities of attributes for the next card, it's your role to successfully guess the next card!
 - +10 for a correct guess
 - +5 for a partially correct guess
 - 0 for incorrect guess
@@ -17,10 +17,11 @@ Enjoy!
 ## Goals
 - [x] 52 cards deck generation
 - [x] Very basic probabilities output & data storage
-- [x] Probability calculator using both card attributes & combinatorics 
-- [ ] Repeatable user inputs
-- [ ] Point system
-- [ ] Non-digits detection
+- [x] Probability calculator using both card attributes & combinatorics  
+- [x] Repeatable user inputs
+- [x] Point system
+- [ ] Fix negative probabilities
+- [ ] Account for user typos
 
 ## How to Download & Run
 To download the file,
