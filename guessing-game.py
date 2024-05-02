@@ -145,14 +145,14 @@ while gameRunning:
     elif guess_suit in deck[0]:
         print("\nCorrect suit, incorrect rank")
         print("The next card is the " + deck[0] + "s")
-        print("\n+5 points")
+        print("+5 points")
         score += 5
 
     # If only the rank is guessed correctly
     elif guess_rank in deck[0]:
         print("\nCorrect rank, incorrect suit")
         print("The next card is the " + deck[0] + "s")
-        print("\n+5 points")
+        print("+5 points")
         score += 5
 
     # If both are incorrectly guessed
