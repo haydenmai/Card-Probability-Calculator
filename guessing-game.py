@@ -138,7 +138,7 @@ while gameRunning:
     if (guess_suit in deck[0]) and (guess_rank in deck[0]):
         print("\nCorrect!")
         print("The next card is the " + deck[0] + "s")
-        print("\n+10 points")
+        print("+10 points")
         score += 10
         
     # If only the suit is guessed correctly
@@ -160,15 +160,16 @@ while gameRunning:
         print("\nIncorrect.")
         print("The next card is the " + deck[0] + "s")
 
-    print("Total Points: {}".format(score))
-    print("------------------------------------------------------------")
+    print("\nTotal Points: {}".format(score))
+    print("\n------------------------------------------------------------\n")
+    
     # If all the cards have been drawn from the deck, end the game
     if totalDrawn >= 51:
         gameRunning = 0
 
 
 # End of game, printing results
-print("\nGame Over!\nYour final score: {}".format(score))
+print("Game Over!\nYour final score: {}".format(score))
 
 #if score > highScore:
 #    highScore = score
