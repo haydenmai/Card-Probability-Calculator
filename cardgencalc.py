@@ -7,18 +7,18 @@ import random
 import math
 
 # Description: Calculates the probability of rank/suit of the next card
-def probabilityOf(typeDrawn, cardsDrawn, typeWant, storeIndex):
+def probabilityOf(typeDrawn, cardsDrawn, rankOrSuit, storeIndex):
     remain = 52 - cardsDrawn
     
     # Calculating remaining number of cards with the same suit
-    if len(typeWant) == 4:
+    if len(rankOrSuit) == 4:
         typeRemain = 13 - typeDrawn
 
     # Calculating remaining number of cards with the same number
-    elif len(typeWant) == 13:
+    elif len(rankOrSuit) == 13:
         typeRemain = 4 - typeDrawn
 
-    print("{}: {}%".format(typeWant[storeIndex+1], float((typeRemain/remain)*100)))
+    print("{:<8} {:>10.2f} %".format(rankOrSuit[storeIndex+1], float((typeRemain/remain)*100)))
 
 # Description: Function for combinations
 def combinations(n, r):
@@ -60,65 +60,76 @@ while len(deck) < 52:
     if card not in deck:
         deck.append(card)
 
-print(deck)
-print("\nLength of deck: ", len(deck))
-
 # Probability calculator
-userDraw = int(input("\nEnter the number of cards to draw: "))
+# Boolean to check if the user input is correct
+validNumber = 0
+
+while validNumber == 0:
+    userDraw = input("\nEnter the initial number of cards to draw: ")
+
+    try:
+        userDraw = int(userDraw)
+        if userDraw > 52 or userDraw < 1:
+            print("Invalid input, please try again")
+        else:
+            validNumber = 1
+    except ValueError:
+        print("Invalid input, please try again")
     
-if userDraw <= 52 | userDraw >= 1:
-    print("Here are your drawn cards: \n",)
+print("Here are your drawn cards: \n")
 
-    # loop to print out cards
-    # This will draw from the deck first in first out
-    drawn = []
+# loop to print out cards
+# This will draw from the deck first in first out
+drawn = []
 
-    # remove from deck and add to hand drawn queue style
-    for i in range(userDraw):
-        drawn.append(deck[0])
-        deck.remove(drawn[i])  
-        print(drawn[i]+"s")
+# remove from deck and add to hand drawn queue style
+for i in range(userDraw):
+    drawn.append(deck[0])
+    deck.remove(drawn[i])  
+    print(drawn[i]+"s")
 
-        card = drawn[i]
-        number, suit = card.split(" of ")
-        # counting
-        # suits
-        if suit in suitsDrawn:
-            suitsDrawn[suit] += 1
+    card = drawn[i]
+    number, suit = card.split(" of ")
+    # counting
+    # suits
+    if suit in suitsDrawn:
+        suitsDrawn[suit] += 1
 
-        # numbers
-        if number in numbersDrawn:
-            numbersDrawn[number] += 1
+    # numbers
+    if number in numbersDrawn:
+        numbersDrawn[number] += 1
 
-    #Printing counted lists
-    print("\nSuits:")
-    for i in range(4):
-        print("{}: {}".format(suits[i + 1], suitsDrawn[suits[i + 1]]))
-    
-    print("\nNumbers:")
-    for i in range(13):
-        print("{}: {}".format(numbers[i + 1], numbersDrawn[numbers[i + 1]]))
+#Printing counted lists
+print("\nNumber of Cards with the Following Rank:")
+for i in range(13):
+    print("{:<5} {:>5}".format(numbers[i + 1], numbersDrawn[numbers[i + 1]]))
 
-    #Printing calculations
-    print("\nHere are the probabilities of the next card being a: \n")
-    
-    # Suits
-    for i in range(4):
-        probabilityOf(suitsDrawn[suits[i + 1]], userDraw, suits, i)
-    
-    # Numbers
-    print("\n")
-    for i in range(13):
-        probabilityOf(numbersDrawn[numbers[i + 1]], userDraw, numbers, i)
-    
-    # Calculating probabilities for the next card (both attributes: suit and number)
-    for i in range(len(deck)):
-        for key in numbersDrawn:
-            if key in deck[i]:        
-                deckProb.append(nextCardProb(numbersDrawn[key], userDraw))
+print("\nNumber of Cards with the Following Suit:")
+for i in range(4):
+    print("{:<8} {:>8}".format(suits[i + 1], suitsDrawn[suits[i + 1]]))
 
-    # Printing probabilities in deckProb
-    print("\nProbabilities of the next card:")
+#Printing calculations
+print("\nHere are the probabilities of the next card being a:")
 
-    for i in range(len(deckProb)):
-        print("{}s: {}%".format(deck[i], (deckProb[i]*100)))
+# Suits
+for i in range(4):
+    probabilityOf(suitsDrawn[suits[i + 1]], userDraw, suits, i)
+
+# Numbers
+print("")
+for i in range(13):
+    probabilityOf(numbersDrawn[numbers[i + 1]], userDraw, numbers, i)
+
+# Calculating probabilities for the next card (both attributes: suit and number)
+for i in range(len(deck)):
+    for key in numbersDrawn:
+        if key in deck[i]:        
+            deckProb.append(nextCardProb(numbersDrawn[key], userDraw))
+
+# Printing probabilities in deckProb
+print("\nProbabilities of the next card:")
+
+for i in range(len(deckProb)):
+    print("{:<22} {:>10.2f} %".format(deck[i]+"s", (deckProb[i]*100)))
+
+# END OF CODE

@@ -1,23 +1,21 @@
 ### Card Guessing Game
 ## Authors: Benley Hsiang & Gia hue (Hayden) Mai
 
-# Make a card deck generator
-
 import random
 
 # Description: Calculates the probability of rank/suit of the next card
-def probabilityOf(typeDrawn, cardsDrawn, typeWant, storeIndex):
-    remain = 52 - cardsDrawn
+def probabilityOf(typeDrawn, cardsDrawn, storeIndex, suitOrRank):
+    totalRemain = 52 - cardsDrawn
     
     # Calculating remaining number of cards with the same suit
-    if len(typeWant) == 4:
+    if len(suitOrRank) == 4:
         typeRemain = 13 - typeDrawn
 
     # Calculating remaining number of cards with the same rank
-    elif len(typeWant) == 13:
+    elif len(suitOrRank) == 13:
         typeRemain = 4 - typeDrawn
 
-    print("{}: {:.2f} %".format(typeWant[storeIndex+1], float((typeRemain/remain)*100)))
+    print("{:<8} {:>10.2f} %".format(suitOrRank[storeIndex+1], float((typeRemain/totalRemain)*100)))
 
 suit = {1:'Spade', 2:'Club', 3:'Heart', 4:'Diamond'}
 
@@ -37,7 +35,7 @@ numbersDrawn = {'Ace': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0
 # Empty list to store a shuffled deck
 deck = []
 
-# This will draw from the deck first in first out
+# List representing the hand of cards drawn from the deck
 drawn = []
 
 # Shuffled Deck Generator
@@ -72,9 +70,6 @@ Have fun!
 
 # Game loop
 
-# Counter for tracking the high score
-highScore = 0
-
 # Boolean for replaying the game or not
 gameRunning = 1
 
@@ -88,7 +83,23 @@ while gameRunning:
     
     # Check if this is the first time drawn
     if totalDrawn == 0:
-        userDraw = int(input("\nEnter the number of cards to draw: "))
+        
+        # Boolean to check if the user input is correct
+        validNumber = 0
+        
+        while validNumber == 0:
+            userDraw = input("\nEnter the initial number of cards to draw: ")
+
+            try:
+                userDraw = int(userDraw)
+                if userDraw > 52 or userDraw < 1:
+                    print("Invalid input, please try again")
+                else:
+                    validNumber = 1
+            except ValueError:
+                print("Invalid input, please try again")
+
+
     # If this is not the first time, default to only 1 draw since we draw 1 card out per guess
     else:
         userDraw = 1
@@ -96,72 +107,101 @@ while gameRunning:
     # Increment counter for total cards drawn from the deck
     totalDrawn += userDraw
 
-    if userDraw <= 52 | userDraw >= 1:
-        print("Here are your drawn cards: \n",)        
+    print("Here are your drawn cards: \n",)        
 
-        # Loop for drawing (removing) a card from the generated deck and adding it to the hand, in the style of a queue
-        for i in range(userDraw):
-            drawn.append(deck[0]) # Add the card from the deck to the hand
-            deck.pop(0) # Remove that card from the deck
+    # Loop for drawing (removing) a card from the generated deck and adding it to the hand, in the style of a queue
+    for i in range(userDraw):
+        drawn.append(deck[0]) # Add the card from the deck to the hand
+        deck.pop(0) # Remove that card from the deck
 
-            card = drawn[i]
-            number, suit = card.split(" of ")
-            
-            # Counting the number of...
-            # Suits
-            suitsDrawn[suit] += 1
+        # Takes the string representing a card and splits the string into its suit and rank
+        # If it's the very first guess, i.e. when totalDrawn == initial number of cards specified by user
+        if totalDrawn == userDraw:
+            card = drawn[i] # Take card i from the drawn hand 
 
-            # Ranks
-            numbersDrawn[number] += 1
+        # If it's not the very first guess, i.e. the number of cards to draw will always be 1
+        else:  
+            card = drawn[totalDrawn - 1] # Take the last card of the drawn hand, i.e. the card we just drew after guessing
+
+        number, suit = card.split(" of ")
         
-        # Print out the drawn hand
-        for i in range(totalDrawn):
-            print(drawn[i] + "s")
-
-        # Printing calculations
-        print("\nHere are the probabilities of the next card being a:")
-        
+        # Counting the number of...
         # Suits
-        for i in range(4):
-            probabilityOf(suitsDrawn[suits[i + 1]], totalDrawn, suits, i)
-        
-        # Ranks 
-        print("")
-        for i in range(13):
-            probabilityOf(numbersDrawn[numbers[i + 1]], totalDrawn, numbers, i)
+        suitsDrawn[suit] += 1
 
-    # Storing the player's guesses
-    guess_suit = input("\nGuess the suit of the next card: ")
-    guess_rank = input("Guess the rank of the next card: ")
+        # Ranks
+        numbersDrawn[number] += 1
+    
+    # Print out the drawn hand
+    for i in range(totalDrawn):
+        print(drawn[i] + "s")
+
+    # Printing calculations
+    print("\nHere are the probabilities of the next card being a:")
+    
+    # Ranks 
+    for i in range(13):
+        probabilityOf(numbersDrawn[numbers[i + 1]], totalDrawn, i, numbers)
+        
+    # Suit
+    print("")
+    for i in range(4):
+        probabilityOf(suitsDrawn[suits[i + 1]], totalDrawn, i, suits)
+
+    # Booleans to check if the user input is valid
+    validSuitInput = 0
+    validRankInput = 0
+
+    # Show score and number of cards remaining for every guess
+    print("")    
+    print("Total Points: {}".format(score))
+    print("Cards remaining: {}".format(len(deck)))
+
+    # Taking user input
+    while validRankInput == 0:
+        guess_rank = input("Guess the rank of the next card: ")
+        guess_rank = guess_rank.capitalize().rstrip(" ") # Capitalize and remove white spaces
+        
+        # Checking for valid input
+        if guess_rank in numbersDrawn:
+            validRankInput = 1
+        else:
+            print("Invalid input, please try again")
+
+    while validSuitInput == 0:
+        guess_suit = input("Guess the suit of the next card: ") # Capitalize, remove white spaces and s
+        guess_suit = guess_suit.capitalize().rstrip("s ")
+
+        # Checking for valid input
+        if guess_suit in suitsDrawn:
+            validSuitInput = 1
+        else:
+            print("Invalid input, please try again")
 
     # Determining if the guess is correct or not:
     # If the suit and rank are guessed correctly
     if (guess_suit in deck[0]) and (guess_rank in deck[0]):
         print("\nCorrect!")
-        print("The next card is the " + deck[0] + "s")
         print("+10 points")
         score += 10
         
     # If only the suit is guessed correctly
     elif guess_suit in deck[0]:
         print("\nCorrect suit, incorrect rank")
-        print("The next card is the " + deck[0] + "s")
         print("+5 points")
         score += 5
 
     # If only the rank is guessed correctly
     elif guess_rank in deck[0]:
         print("\nCorrect rank, incorrect suit")
-        print("The next card is the " + deck[0] + "s")
         print("+5 points")
         score += 5
 
     # If both are incorrectly guessed
     else:
         print("\nIncorrect.")
-        print("The next card is the " + deck[0] + "s")
 
-    print("\nTotal Points: {}".format(score))
+    print("The next card is the " + deck[0] + "s")
     print("\n------------------------------------------------------------\n")
     
     # If all the cards have been drawn from the deck, end the game
@@ -172,14 +212,4 @@ while gameRunning:
 # End of game, printing results
 print("Game Over!\nYour final score: {}".format(score))
 
-#if score > highScore:
-#    highScore = score
-
-#print("\nHigh score: " + highScore)
-
-#replay = input("\n\nPlay again? (Y/n): ")
-
-#if replay == "n":
-#    gameRunning = 0
-
-#print("\n\n\n")       
+# END OF CODE   

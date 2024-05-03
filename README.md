@@ -1,12 +1,12 @@
 # Card-Probability-Calculator
-This is a work-in-progress card probability calculator in Python by Hayden Mai & Benley Hsiang.
+This is a card probability calculator in Python by Hayden Mai & Benley Hsiang.
 
 It is a collaborative project inspired by wanting to further explore how a deck of cards works and how probabilities may contribute to a prediction.
 
 Based on everything we learned in **CMPT 120** (Intro to CS & Programming), **CMPT 125** (Intro to CS & Programming II) and **CMPT 210** (Probability & Computing) at Simon Fraser University.
 
 ## Game Info
-You are guessing the next card of the deck! The game will show you the values of the card, but hide the suit of the card.
+You are guessing the next card of the deck! The game will show you the probability of the next card's rank and suit.
 
 Presented with the probabilities of attributes for the next card, it's your role to successfully guess the next card!
 - +10 for a correct guess
@@ -20,8 +20,8 @@ Enjoy!
 - [x] Probability calculator using both card attributes & combinatorics  
 - [x] Repeatable user inputs
 - [x] Point system
-- [ ] Fix negative probabilities
-- [ ] Account for user typos
+- [X] Fix negative probabilities
+- [X] Account for user typos
 
 ## How to Download & Run
 To download the file,
